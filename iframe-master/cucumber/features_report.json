@@ -1,0 +1,126 @@
+[
+  {
+    "uri": "features/specifications/01_login.feature",
+    "id": "login-pcms",
+    "keyword": "Funcionalidade",
+    "name": "Login PCMS",
+    "description": "Eu, como usuário do PCMS\nDesejo realizar Login\nPara que eu possa ter acesso ao sistema",
+    "line": 6,
+    "tags": [
+      {
+        "name": "@hooks_login",
+        "line": 3
+      },
+      {
+        "name": "@login",
+        "line": 4
+      }
+    ],
+    "elements": [
+      {
+        "id": "login-pcms;login-com-sucesso",
+        "keyword": "Cenario",
+        "name": "Login com sucesso",
+        "description": "",
+        "line": 12,
+        "type": "scenario",
+        "tags": [
+          {
+            "name": "@hooks_login",
+            "line": 3
+          },
+          {
+            "name": "@login",
+            "line": 4
+          }
+        ],
+        "before": [
+          {
+            "match": {
+              "location": "features/support/hooks.rb:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1667269
+            }
+          },
+          {
+            "output": [
+              "O email utilizado é c049448",
+              "A senha utilizada é welcome1"
+            ],
+            "match": {
+              "location": "features/hooks/01_hooks_login.rb:1"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 34635
+            }
+          }
+        ],
+        "steps": [
+          {
+            "keyword": "Dado ",
+            "name": "que eu acesse a página de Login",
+            "line": 14,
+            "match": {
+              "location": "features/step_definitions/01_login.rb:1"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28882181665
+            }
+          },
+          {
+            "keyword": "Quando ",
+            "name": "eu informar os campos obrigatórios",
+            "line": 15,
+            "match": {
+              "location": "features/step_definitions/01_login.rb:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 153664619
+            }
+          },
+          {
+            "keyword": "E ",
+            "name": "Clicar em Logar",
+            "line": 16,
+            "match": {
+              "location": "features/step_definitions/01_login.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6853702566
+            }
+          },
+          {
+            "keyword": "Entao ",
+            "name": "o meu Login e efetuado com sucesso",
+            "line": 17,
+            "match": {
+              "location": "features/step_definitions/01_login.rb:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3042976148
+            }
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/support/hooks.rb:23"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Foi forþado o cancelamento de uma conexÒo existente pelo host remoto. (Errno::ECONNRESET)\n./features/support/helper.rb:15:in `take_screenshot'\n./features/support/hooks.rb:29:in `After'",
+              "duration": 3851946
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

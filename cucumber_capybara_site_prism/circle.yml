@@ -1,0 +1,11 @@
+machine:
+  ruby:
+    version: 2.3.0
+dependencies:
+  override:
+    - gem install bundler
+
+test:
+  override:
+    - bundle install
+    - bundle exec cucumber -p chrome -p dev
