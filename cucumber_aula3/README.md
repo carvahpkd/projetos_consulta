@@ -1,6 +1,5 @@
 # Treinamento Cucumber
 
-Aula 3 - Aprendendo a lidar com o Git
 
 [![CircleCI](https://circleci.com/gh/tiagonline/cucumber_aula3.svg?style=svg)](https://circleci.com/gh/tiagonline/cucumber_aula3)
 
