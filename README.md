@@ -1,3 +1,5 @@
-# projetos_consulta
+# Exemplos_Consulta
 
-Repositorio clonado de amiguinhos para auxilio e consulta
+Projetos realizados por amigos da comunidade que servem como base
+
+Projetos para tirar dúvidas e ajudar em futuras automações
