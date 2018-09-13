@@ -1,0 +1,446 @@
+Introdução ao comando SELECT da SQL - Parte I
+
+Embora existam componentes e frameworks que auxiliem os programadores na recuperação das informações dos SGBDs, 
+é necessário o conhecimento do select para as customizações com o intuito de melhorar o desempenho das consultas.
+
+Introdução ao comando SELECT da SQL - Parte I
+Para Programadores
+
+#### Comando SELECT ####
+ 
+O comando select recupera os dados de uma ou mais tabelas, sendo um dos comandos mais simples e, ao mesmo tempo, 
+mais extenso da SQL devido as suas funções, operandos, comandos, sub-comandos e cláusulas não obrigatórias.
+
+Funcion
+-codigo:Integer
+-nome:varchar(10)
+-salario:numeric(15,2)
+-setor:integer
+
+Setor
+-codigo:Interger
+-setor:varchar(20)
+
+Cliente
+-codigo:Interger
+-nome:varchar((10)
+-sobrenome:varchar(10)
+
+Pedido
+-codigo:Interger
+-Cliente:interger
+-valor:numeric(15,2)
+ 
+
+ 
+ Para os exemplos que se seguem adotaremos as tabelas predefinidas abaixo:
+Figura 1 – Tabelas predefinidas.
+
+Tabela 1 – Dados inseridos na tabela Funcion.
+Codigo		Nome     Salario      Setor
+1			Tadeu	        1.500,00       1
+2			Jose	        1.200,00	     2
+3			Marcos	      1.000,00	     1
+4			Maria	          800,00       2
+5			Joana	        1.500,00  	   3
+6			Neves	          500,00       
+
+
+Tabela 2 – Dados inseridos na tabela Setor.
+Codigo      Setor
+1				  Desenvolvimento
+2				  Manutenção
+3			  	Finanças
+4			  	Vendas
+
+
+Tabela 3 – Dados inseridos na tabela Cliente.
+Codigo   Nome         Sobrenome
+1				Francisco 		Silva
+2				Jose	    		Carvalho
+3				Maria		    	Silva
+4				Jose 			    Souza
+5				Manoel 			  Carvalho
+
+
+Tabela 4 – Dados inseridos na tabela Pedido.
+Codigo	Cliente			Valor
+1					2	  		1.000,00
+2					4	  		2.000,00	
+3					2		  	1.500,00
+4					5		  	2.500,00
+5					2		  	1.000,00
+
+
+#### Select simples ####
+ 
+Sintaxe :
+ 
+select  Coluna, Coluna, ..., Coluna from  Tabela
+ 
+Tabela                  Nome da tabela
+
+Coluna                  Nome de uma coluna – Para mostrar todas as colunas
+						pode-se colocar apenas a máscara “*” no lugar do 
+						nome das colunas
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+2           Ylane
+3           Julian
+4           Ewerton
+5           João
+6           Geraldo
+7           Maria
+ 
+Exemplo :
+ 
+select * from Funcion
+ 
+Resultado
+Codigo      Nome           Salario                Setor
+1           Tadeu             1500                1
+2           Ylane             1200                2
+3           Julian            1000                1
+4           Ewerton           1000                1
+5           João               800                2
+6           Geraldo           1500                3
+7           Maria              500
+ 
+
+ #### Cláusula where com condições simples ####
+ 
+Podemos filtrar colunas para nos mostrar apenas os dados que nos interessa através da cláusula where em conjunto com os operadores comparativos.
+ 
+Sintaxe :
+ 
+select  Coluna, Coluna, ..., Coluna from  Tabela
+where Condição
+ 
+Tabela                 Nome da tabela
+
+Coluna                 Nome de uma coluna – Para mostrar todas as colunas
+					   pode-se colocar apenas a máscara “*” no lugar do nome
+					   das coluna
+					   
+Condição              Cria uma condição para filtrar os dados utilizando os
+					  operadores comparativos
+ 
+
+ #### Operador Comparativo “=” (Igual) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome = ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+ 
+
+ #### Operador Comparativo “<>” (Diferente) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome <> ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+2           Ylane
+3           Julian
+4           Ewerton
+5           João
+6           Geraldo
+7           Maria
+ 
+
+ #### Operador Comparativo “>” (Maior que) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome > ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+2           Ylane
+ 
+
+ #### Operador Comparativo “>=” (Maior que ou Igual)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome >= ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+2           Ylane
+ 
+
+ #### Operador Comparativo “<” (Menor que) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome < ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+3           Julian
+4           Ewerton
+5           João
+6           Geraldo
+7           Maria
+ 
+
+ #### Operador Comparativo “<=” (Menor que ou Igual)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome <= ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+3           Julian
+4           Ewerton
+5           João
+6           Geraldo
+7           Maria
+ 
+
+ #### Operador Comparativo “between ... and ...” (Entre dois valores)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome between ‘João’ and ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+3           Julian
+5           João
+7           Maria
+ 
+
+ 
+ #### Operador Comparativo “not between ... and ...” (Não está entre dois valores)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome not between ‘João’ and ‘Tadeu’
+ 
+Resultado
+Codigo      Nome
+2           Ylane
+4           Ewerton
+6           Geraldo
+ 
+
+ #### Operador Comparativo “in(lista)” (Igual a qualquer valor da lista)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome in (‘João’,‘Tadeu’)
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+5           João
+ 
+
+ #### Operador Comparativo “not in(lista)” (Diferente de qualquer valor da lista) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome not in (‘João’,‘Tadeu’)
+ 
+Resultado
+Codigo      Nome
+2           Ylane
+3           Julian
+4           Ewerton
+6           Geraldo
+7           Maria
+ 
+
+ #### Operador Comparativo “like” (Pesquisa uma cadeia de caractere) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome like‘J%’
+Obs.: A máscara no operador like usada foi “%”, porém ele pode mudar de um SGBDR para outro.
+ 
+Resultado
+Codigo      Nome
+3           Julian
+5           João
+ 
+ 
+#### Operador Comparativo “is null” (Valor nulo) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Setor is null
+ 
+Resultado
+Codigo      Nome
+7           Maria
+ 
+ 
+#### Operador Comparativo “is not null” (Valor não nulo)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Setor is not null
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+2           Ylane
+3           Julian
+4           Ewerton
+5           João
+6           Geraldo
+ 
+
+ #### Cláusula where com condições complexas ####
+ 
+Para filtrar dados que requerem condições complexas utilizamos a cláusula where 
+junto com os operadores comparativos e lógicos.
+ 
+Sintaxe :
+ 
+select  Coluna, Coluna, ..., Coluna from  Tabela
+where Condição Operador_Lógico Condição
+ 
+Tabela                      Nome da tabela
+
+Coluna                  Nome de uma coluna – Para mostrar todas as
+                        colunas pode-se colocar apenas a máscara “*” 
+						no lugar do nome das colunas
+
+Condição                 Cria uma condição para filtrar os dados utilizando
+                         os operadores comparativos
+
+Operador_Lógico          Operador lógico and ou or para unir as duas
+                         condições no mesmo filtro
+ 
+As condições complexas seguem regras de precedência descritas abaixo:
+ 
+Ordem      Precedência
+1               Expressões entre parênteses “(...)”
+2               Todos os operadores de comparação “=,<>,>,>=,<,<=,in...”
+3               Operador lógico and
+4               Operador lógico or
+ 
+Caso duas condições estejam na mesma ordem de precedência, terá maior
+precedência a que estiver mais próxima da cláusula where.
+ 
+
+ #### Operador Lógico “and” (E)####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Setor is not null and Codigo = 1
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+ 
+
+ #### Operador Lógico “or” (OU) ####
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+where Nome = ‘Tadeu’ or Nome = ‘Ylane’
+ 
+Resultado
+Codigo      Nome
+1           Tadeu
+2           Ylane
+ 
+
+ #### Cláusula order by ####
+ 
+Os registros mostrados podem está com uma ou mais colunas ordenadas de modo ascendente ou descendente.  
+tilizando-se para isso a cláusula order by.
+ 
+Sintaxe :
+ 
+select    Coluna, Coluna, ..., Coluna from  Tabela
+where     Condição [Opcional]
+order by  Coluna_Ordenada Modo_Ordenação
+ 
+Tabela                Nome da tabela
+
+Coluna                Nome de uma coluna – Para mostrar todas as
+                      colunas pode-se colocar apenas a máscara “*” 
+					  no lugar do nome das colunas
+					 
+Condição             Cria uma condição para filtrar os dados utilizando
+                     os operadores comparativos
+
+Coluna_Ordenada      Coluna que será ordenada
+
+Modo_Ordenação      Modo que a coluna será ordenada
+                    asc      Modo ascendente [Opcional]
+                    desc     Modo descendente
+ 
+#### Modo “asc” (Ascendente)
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+order by Nome asc
+ 
+Ou
+ 
+select Codigo, Nome from Funcion
+order by Nome
+ 
+Resultado
+Codigo      Nome
+4           Ewerton
+6           Geraldo
+5           João
+3           Julian
+7           Maria
+1           Tadeu
+2           Ylane
+ 
+#### Modo “desc” (Descendente)
+ 
+Exemplo :
+ 
+select Codigo, Nome from Funcion
+order by Nome desc
+ 
+Resultado
+Codigo      Nome
+2           Ylane
+1           Tadeu
+7           Maria
+3           Julian
+5           João
+6           Geraldo
+4           Ewerton

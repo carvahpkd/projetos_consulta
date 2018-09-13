@@ -1,0 +1,18 @@
+development:
+  clients:
+    default:
+      database: blog-db-dev
+      hosts:
+        - ds243728.mlab.com:43728
+      options:
+        user: qaninja
+        password: qaninja
+testing:
+  clients:
+    default:
+      database: heroku_xpt0238f
+      hosts:
+        - ds243798.mlab.com:43798
+      options:
+        user: qaninja
+        password: qaninja

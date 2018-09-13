@@ -1,0 +1,164 @@
+### O comando SELECT###
+
+Provavelmente este será o comando que mais você utilizará em suas instruções SQL. 
+A instrução SELECT retornará um conjunto de registros , recordset, do tipo Dynaset/Table.
+
+Basicamente você deverá fornecer duas informações básicas:
+
+- Quais campos(colunas) da tabela deseja obter
+- O nome da Tabela da qual você quer obter os dados.
+
+Assim uma instrução SELECT para selecionar todos os registros da tabela - tblalunos - poderá ser escrita como:
+
+    SELECT * FROM tblalunos
+
+-O asterico ( * ) é o curinga para indicar todos os campos da tabela
+-A cláusula FROM indica de onde os dados serão extraídos.
+
+Para selecionar os campos nome e endereço da tabela tblalunos , faremos:
+
+   SELECT nome, endereco FROM tblalunos
+
+- Os nomes dos campos e das tabelas podem ser indicados sem colchêtes [] , quando não existir espaços ou pontuação, 
+e são separados por vírgulas.
+Assim para uma tabela de nome Tabela Alunos com os campos : Nome Aluno e Endereço Aluno seriamos obrigados a escrever:
+
+    SELECT [Nome Aluno], [Endereço Aluno] FROM [Tabela Alunos]
+
+ 
+### Nomeando e Criando Campos Calculados
+Um campo calculado pode resultar de uma operação aritmética sobre campos numéricos ou pode ser resultado de operações de 
+strings sobre campos textos. Para campos numéricos você pode qualquer operador padrão ( +,-,*,/,^) e para strings o operador de
+concatenação ( & ), além de poder usar as funções do Visual Basic .Ex: UCASE$, MID$ , SQR ,
+ 
+Vejamos um exemplo onde temos uma tabela chamada Produtos com os seguintes campos:Produto,Nome , Preço 
+e na outra tabela chamada Estoque os campos: Produto, quantidade
+Vamos extrair através de um comando SELECT o nome do produto, e o valor total em estoque.
+Note que não temos a informação valor total , para isto vamos criar um campo calculado com o nome de Valor Total e esse campo
+será resultante da multiplicação do preço do produto pela quantidade do mesmo em estoque.
+
+    SELECT produtos.nome, [preço]*[quantidade] AS [valor total]
+    FROM estoque INNER JOIN produtos ON estoque.produto = produtos.produto;
+
+Criamos o campo calculado [preço]*[quantidade] e o nomeamos como valor total. A cláusula AS define o nome desejado.
+Outro exemplo seria a criação de um campo nome pela junção dos campos nome e sobrenome de uma tabela clientes:
+
+    SELECT nome & ', ' & sobrenome AS nome FROM clientes
+
+Se a cláusula AS não for utilizada será criado automaticamente um nome Expr1001 para o primeiro campo , e assim por diante.
+ 
+### Usando a cláusula WHERE para definir critérios.
+Se você precisar usar um determinado critério para selecionar os dados pode utilizar a cláusula WHERE.
+A sintaxe básica é a seguinte:
+
+    SELECT <nome dos campos> FROM <nome da tabela> WHERE <critério>
+
+Para extrair uma relação com o nome dos alunos da 1 série, faremos:
+
+    SELECT nome FROM tblalunos WHERE serie="1"
+ 
+Note que usamos o número entre aspas, pois o campo serie é definido como do tipo Texto, se fosse numérico teríamos que escrever:
+
+    SELECT nome FROM tblalunos WHERE serie=1
+
+Supondo que você desse a opção ao usuário de informar a série em uma caixa de texto(Text1) , você teria que escrever o seguinte:
+
+    sql="SELECT nome FROM tblalunos WHERE serie=' " & text1.text & " ' "
+ou para o campo serie definido como tipo Numero.
+    sql="SELECT nome FROM tblalunos WHERE serie= " & text1.text
+
+Observe que não usamos o nome da tabela na especificação dos campos pois o campo esta presente na tabela de origem dos dados.
+Cuidado quando for trabalhar com datas como critério de seleção pois a data deve estar entre os caracteres # ( cerquilha) e
+no formato mm/dd/yyyy.
+Assim para selecionar os alunos que nasceram no dia 12 de agosto de 1986 - 12/08/1986 - devemos fazer:
+
+    sql = "Select nome FROM tblalunos WHERE nascimento= #8/12/1986#"
+
+Dando a opção ao usuário de informa a data e usando um MaskeditBox(Maskdata) para receber a informacão teremos:
+
+    sql="Select nome FROM tblalunos WHERE nascimento=" & "#" & Format(maskdata, "mm/dd/yyyy") & "#"
+
+Note que tivemos que mudar o formato da data para mm/dd/yyyy
+ 
+Atenção !!! cuidado com o Apóstrofo - Se tiver um apóstrofo dentro de uma string de pesquisa , para evitar problemas 
+você deve delimitar a string de pesquisa por aspas. Assim para pesquisar o nome Macdonald's você de fazer assim:
+
+    sql="SELECT nome FROM tblempresas WHERE nome= " & " Macdolnad's"
+ 
+### Ordenando o resultado de sua Consulta - ORDER BY
+Se quisermos ordernar o resultado de uma consulta podemos acrescentar a cláusula ORDER BY e o nome do campo pelo qual 
+desejamos a ordenação. Por padrão será retornado os dados na ordem crescente , se desejar na inverter a ordem use a palavra chave DESC.
+Assim para ordernarmos os alunos da 1º série por nome e em ordem crescente faríamos assim:
+
+    sql="SELECT nome FROM tblalunos WHERE serie=' " & text1.text & " ' " ORDER BY nome
+para ordernar em ordem de teríamos:
+
+    sql="SELECT nome FROM tblalunos WHERE serie=' " & text1.text & " ' " ORDER BY nome DESC
+ 
+### Usando a cláusula LIKE
+As vezes os dados que você está desejando filtrar não têm uma ocorrência exata, ou você pretende realizar uma busca 
+mais irrestrita. Para isso devemos usar a cláusula LIKE. Supondo que desejamos filtrar todos os alunos que tenham o nome 
+começado pelas letrar Jos, Através da cláusula LIKE podemos inserir as letras desejadas e a SQL fará uma busca parcial pela 
+string informada: Algo como:
+
+    SELECT nome FROM tblalunos WHERE nome LIKE "Jos*"
+
+Isto retornará os possíveis nomes: José , Josué, Josimar, Josias, etc...
+
+Note que usamos o asterístico (*) que funciona como um coringa , substituindo os demais caracteres.
+
+A seguir listamos abaixo as principais ocorrências :
+
+Tipo de ocorrência	                Padrão utilizado na Consulta SQL	          O retorno da Pesquisa
+Múltiplos caracteres                           	b*b	                               bb, bBb, bccccB
+Caractere especial	                            b[*]b                               	b*b
+Múltiplos caracteres	                        ab*	                                 abcdefg, abc
+Caractere único	                                b?b	                                 bbb, b1b,bNb
+Dígito único	                                b#b                                	b0b,b1b,b4b
+Intervalo de caracteres	                        [b-h]	                             c,d,e,f,g
+Não dígito	                                    [!0-9]	                              A,a, %, P
+ 
+
+### Definindo o relacionamento entre as Tabelas: JOIN
+Com frequência você vai ser obrigado a obter dados de diversas tabelas, pois trabalhando com o modelo relacional de banco de dados ,
+durante a normalização os dados serão colocados em tabelas diferentes para evitar a repetição de informações.
+Para selecionar campos de várias tabelas , você deve informar basicamente o seguinte:
+-O nome de cada tabela na qual cada campo é selecionado
+-Os nomes dos campos dos quais você está selecionando os dados
+-O relacionamento entre as tabelas
+
+Assim, supondo que você deseja obter o nome e a nota de cada aluno do banco de dados Escola.mdb; se você observar vai notar que 
+não temos essas informações em uma mesma tabela. Os dados que desejamos encontram-se em duas tabelas: Tblalunos ( o nome do aluno ) ,
+TblNotas ( o codigo do curso e a nota)
+A sintaxe para o comando SQL extrair esses dados(nome e nota, ordenados pelo nome do aluno) é:
+    
+    SELECT tblalunos.nome, tblnotas.nota
+    FROM tblalunos INNER JOIN tblnotas ON tblalunos.codaluno = tblnotas.codaluno ORDER BY tblalunos.nome;
+ 
+Quando você têm um vínculo entre duas tabelas poderá usar a palavra chave INNER JOIN na cláusula FROM de uma instrução SELECT
+para criar um conjunto de registros com campos de ambas as tabelas
+Naturalmente quanto maior a quantidade de tabelas das quais você deseja extrair os seus dados mais complexa a instrução se tornará.
+Assim, para obter o nome ,curso e a nota de cada aluno do banco de dados Escola.mdb; agora os dados que desejamos encontram-se 
+em três tabelas: Tblalunos ( o nome do aluno ) , TblNotas ( o codigo do curso e a nota) e TblCursos.
+ 
+    SELECT tblalunos.nome, tblcursos.nomecurso, tblnotas.nota
+    FROM tblcursos INNER JOIN (tblalunos INNER JOIN tblnotas ON tblalunos.codaluno = tblnotas.codaluno) ON tblcursos.codcurso = tblnotas.codcurso
+    ORDER BY tblalunos.nome;
+ 
+A diferença entre a utilização da cláusula WHERE e da JOIN para reunir dados de múltiplas tabelas é que a cláusula WHERE 
+produz um recordset somente de leitura. Para criar um recordset atualizável devemos usar JOIN
+ 
+A sintaxe básica para o JOIN  é:
+tabela 1 [INNER | LEFT | RIGHT ] JOIN tabela 2 ON tabela1.chave1=tabela2.chave2
+
+Temos 3 opções de cláusulas usadas com JOIN e, o comportamento na maneira de retornar os registros difere em cada caso:
+
+Tipos de Join                	   Registros da Tabela da Esquerda            Registros da Tabela da Direita
+INNER   	                     Somente registros com um registro           Somente registros com um registro 
+                               correspondente na tabela da direita          correspondente na tabela da esquerda
+
+LEFT                               Todos os Registros                       Somente registros com um registro 
+                                                                           correspondente na tabela da esquerda
+
+RIGHT                           Somente registros com um registro           	Todos os Registros
+                                correspondente na tabela da direita

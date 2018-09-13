@@ -1,0 +1,283 @@
+####Comandos básicos em SQL####
+
+utilizando os principais comandos: INSERT, UPDATE, DELETE e SELECT.
+  
+Nesse artigo veremos como incluir, excluir e atualizar registros em um banco de dados. 
+
+<<<< INSERINDO DADOS >>>>>
+O comando para inclusão no banco de dados é o INSERT, que possui a seguinte estrutura:
+
+*Listagem 1: Sintaxe do comando insert
+
+INSERT INTO nome_tabela (lista-de-campos)
+VALUES (lista_dados)
+
+OU
+
+INSERT INTO nome_tabela  VALUES (lista_dados)
+
+Onde:
+Nome_tabela: nome da tabela no qual será inserido os dados.
+Lista-de-campos: nome das colunas que receberão os valores.
+Lista-dados: valores que serão inseridos na tabela. Estes campos devem estar na mesma 
+ordem descrita em lista-de-campos, todos separados por vírgula. Se for utilizado um comando SELECT 
+o mesmo deve retornar a mesma quantidade de colunas com os mesmos tipos de dados especificados em lista-de-campos.
+
+*Listagem 2: Exemplos do comando insert
+
+INSERT INTO EMPREGADOS(CODIGO, NOME, SALARIO, SECAO)
+VALUES(1, "HELBERT CARVALHO", 1.500, 1)
+INSERT INTO EMPREGADOS VALUES(1,"HELBERT CARVALHO",1500,1)
+
+Na segunda opção foi omitida a declaração dos campos. Essa sintaxe funciona somente se for repassado
+valores para todas as colunas. Podemos também passar valores através de um comando SELECT, conforme abaixo:
+
+*Listagem 3: Insert com valores provenientes de um select
+
+INSERT INTO EMPREGADOS(CODIGO,NOME, SALARIO, SECAO)
+      SELECT CODIGO,NOME,SALARIO, SECAO
+      FROM EMPREGADOS_FILIAL
+      WHERE DEPARTAMENTO = 2
+
+Neste comando todos os empregados da tabela EMPREGADOS_FILIAL foram cadastrados na tabela EMPREGADOS.
+Se o nome dos campos não for citado no comando INSERT, o SELECT deverá retornar valores compatíveis para
+todos os campos disponíveis na tabela de destino.
+
+<<<<< ATUALIZANDO DADOS >>>>>
+O comando para atualizar registros é UPDATE, que tem a seguinte sintaxe:
+
+*Listagem 4: Sintaxe do comando update
+
+UPDATE nome_tabela
+SET CAMPO = "novo_valor"
+WHERE CONDIÇÃO
+
+Onde:
+Nome_tabela: nome da tabela que será modificada
+Campo: campo que terá seu valor alterado
+Novo_valor: valor que substituirá o antigo dado cadastrado em campo
+Where: Se não for informado, a tabela intera será atualizada
+Condição: regra que impõe condição para execução do comando
+
+*Listagem 5: Exemplos de uso do comando update
+
+UPDATE DEPARTAMENTO
+SET SALARIO = 1000
+WHERE CODIGODEP = 1
+
+No trecho acima, todos os colaboradores que fazem parte do departamento 1 terá o salário alterado para 1000.
+
+*Listagem 6: Update em mais de um campo
+
+UPDATE DEPARTAMENTO
+SET NOME = "HELBERT CARVALHO",SALARIO = 1000
+WHERE CODIGO = 1
+
+Neste exemplo alteramos mais de um campo de uma vez. Podemos combinar o comando SELECT com UPDATE. No exemplo a seguir,
+os funcionários de menor salário receberão aumento de 10%.
+
+*Listagem 7: Outro exemplo de uso do comando update
+
+UPDATE EMPREGADOS
+SET SALARIO = salario * 1.1
+WHERE SALARIO = (SELECT MIN(salario) FROM EMPREGADOS)
+
+O comando SELECT também pode ser utilizado na atribuição de valor ao campo:
+
+*Listagem 8: Update passando select como valor
+
+UPDATE EMPREGADOS
+SET SALARIO = (SELECT MAX(salario) FROM EMPREGADOS)
+WHERE DEPARTAMENTO = 5
+
+<<<<< REMOVENDO DADOS >>>>>
+O comando utilizado para apagar dados é o DELETE.
+
+*Listagem 9: Sintaxe do comando delete
+
+DELETE FROM nome_tabela
+WHERE condição
+
+Onde:
+Nome_tabela: nome da tabela que será modificada
+Where: cláusula que impõe uma condição sobre a execução do comando
+
+*Listagem 9: Exemplo de uso do comando delete
+
+DELETE FROM EMPREGADOS
+WHERE CODIGO = 125
+
+<<<<< Sub-consultas SQL >>>>>
+Uma sub-consulta é uma instrução SELECT aninhada dentro de outra instrução SELECT, INSERT, DELETE ou UPDATE. 
+Veja abaixo alguns exemplos de sintaxe:
+
+Comparação [ANY|SOME|ALL] (instrução sql)
+Expressão [NOT] IN (instrução sql)
+Expressão [NOT] EXISTS (instrução sql)
+
+Os predicados ANY e SOME, sinônimos, são utilizados para recuperar registro na consulta principal que 
+satisfaçam a comparação com qualquer registro da sub-consulta.
+
+==Tabela A
+
+X    	Y
+
+1    	5
+
+2    	9
+
+3    	10
+
+4    	6
+
+==Tabela B
+X Y 10 4 20 3 30 11 40 9
+
+*Listagem 11: Exemplo de subconsulta
+
+SELECT * FROM A
+WHERE Y > ANY (SELECT Y FROM B WHERE X>20)
+
+Resultado:
+
+X    	Y
+
+3	    10
+
+Os registros da tabela A que forem maior do que qualquer registro do resultado da sub-consulta serão selecionados. 
+Repare que nenhum registro da tabela A é maior do que 11, no entanto, o terceiro registro é maior do que 9.
+
+*Listagem 12: Exemplo de subconsulta com o operador ANY
+
+SELECT * FROM A WHERE Y > ANY (SELECT Y FROM B WHERE X < 40)
+
+Resultado:
+X	    Y
+
+1	    5
+
+2    	9
+
+3    	10
+
+4    	6
+
+Todos os registros foram selecionados porque o valor de y no resultado da sub-consulta assume 3,
+que é menor do que todos os valores de y da tabela A. Se utilizarmos o ANY com sinal de igualdade 
+teremos o mesmo resultado da cláusula IN.
+
+*Listagem 13: Exemplo com o operador ANY e sinal de igualdade
+
+SELECT * FROM A WHERE Y = ANY (SELECT Y FROM B)
+
+Resultado:
+X     Y
+
+2     9
+
+O predicado ANY também pode ser utilizado em conjunto com os comandos UPDATE e DELETE. Veja o exemplo:
+
+*Listagaem 14: Update usando o operador ANY
+
+UPDATE A
+SET X = X * 10
+WHERE Y > ANY (SELECT Y FROM B WHERE X < 40)
+
+*Listagem 15: Delete usando o operador ANY
+
+DELETE FROM A
+WHERE Y > ANY (SELECT Y FROM B WHERE X < 40)
+
+O predicado ALL é utilizado para recuperar os registros da consulta principal que satisfaçam a 
+comparação com todos os registros recuperados na sub-consulta. Observe os exemplos:
+
+*Listagem 16: Exemplo de select com operador ANY
+
+SELECT * FROM A WHERE Y > ALL (SELECT Y FROM B)
+
+Resultado: X     Y
+
+*Listagem 17: Outro exemplo de select com operador ANY
+
+SELECT * FROM A WHERE Y > ALL (SELECT Y FROM B WHERE X > 30)
+
+Resultado:
+X    	Y
+
+3    	10
+
+O uso de != ALL equivale a NOT IN.
+
+*Listagem 18: Subconsulta com operador ALL
+
+SELECT * FROM A WHERE Y != ALL (SELECT Y FROM B)
+
+Resultado:
+X	    Y
+
+1	    5
+
+3	    10
+
+4     6
+
+O predicado IN é utilizado para recuperar apenas os registros na consulta principal que contém equivalência 
+na sub-consulta. É o mesmo que =ANY.
+
+*Listagem 19: Consulta com operador IN
+
+SELECT * FROM A WHERE Y IN(SELECT Y FROM B)
+
+X	    Y
+
+2     9
+
+No código a seguir retornamos os empregados que venderam um montante maior que R$ 50.000,00.
+
+*Listagem 20: Select com operador IN utilizando HAVING
+
+SELECT * FROM EMPREGADO WHERE CODIGO IN
+(SELECT CODEMPREGADO FROM VENDAS
+GROUPY BY CODEMPREGADO
+HAVING MAX(VALORTOTAL) > 50000)
+
+De maneira contrária, NOT IN pode ser utilizado para recuperar apenas os registros na consulta principal
+para os quais não exista equivalência na sub-consulta.
+
+*Listagem 21: Select com operador NOT IN
+
+SELECT * FROM A WHERE Y NOT IN(SELECT Y FROM B)
+
+Resultado:
+X    	Y
+
+1    	5
+
+3	    10
+
+4	    6
+
+O predicado EXISTS determina se a sub-consulta retorna algum registro. Esta cláusula produz resultados 
+semelhantes ao uso de IN. Veja exemplo:
+
+*Listagem 22: Consulta com operador EXISTS
+
+SELECT * FROM EMPREGADO WHERE EXISTS
+(SELECT * FROM PEDIDOS
+ WHERE EMPREGADO.CODIGO = PEDIDOS.CODEMPREGADO
+ GROUP BY PEDIDOS.CODEMPREGADO
+ HAVING MAX(PEDIDOS.VALOR_TOTAL) > 50000)
+
+Neste comando são retornados o nome e o departamento dos funcionários cuja soma de vendas ultrapassaram 
+R$ 50.000,00. O predicado NOT EXISTS também pode ser utilizado produzindo o efeito contrário:
+
+*Listagem 23: Consulta com operador NOT EXISTS
+
+SELECT * FROM EMPREGADO WHERE NOT EXISTS
+(SELECT * FROM PEDIDOS
+WHERE EMPREGADO.CODIGO = PEDIDOS.EMPREGADO)
+
+Conclusão
+Os comandos SQL fornecem uma linguagem simples para manipulação de dados em um SGBD. 
+Como o SQL se tornou um padrão, os comandos apresentados funcionarão na maioria dos bancos de dados relacionais.
+Consulte o help do seu banco de dados para possíveis alterações ou particularidades.

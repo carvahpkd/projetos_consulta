@@ -87,10 +87,3 @@ e Circle Ci:
 
 Compartilho com vocês o que tenho na minha barra de favoritos para referências rápidas das documentações. O passo a passo vocês vêem nos links. Estou sempre incluindo novos projetos, forks e referências no meu git também:
 - https://github.com/tiagonline
-
-Se precisar marcamos uns hangouts.
-Qualquer coisa é só chamar! hehe.
-
-tiagonline@gmail.com
-
-Abraço.

@@ -1,0 +1,130 @@
+Notem que todos os lanches do tipo X sofreram modificações no preço:
+ 
+
+As linhas em negrito representam os dados modificados, ou seja se não tivesemos usado o where para
+a filtragem o update daria o aumento para todos os produtos, lendo o select dado temos a conclusão
+do que ele diz, atualize na tabela de lanche o campo preço de lanche para o preço do lanche multiplicado
+por 1.1 o que da os 10 % de aumento onde o tipo do lanche for X
+
+Agora digamos que você quer todos os lanches do tipo beirute
+
+SELECT * FROM LANCHES WHERE TIPO_LANCHE = 'BEIRUTE'
+
+Lendo o comando selecione tudo da tabela de lanches onde o tipo de lanche for igual a beirute.
+ 
+
+Agora usaremos os operadores auxiliares OR e AND, a diferença de um para o outro é muito simples, não
+é um bicho de 7 cabeças, o AND significa E e o OR siginifica OU dai já fica mais facil, sempre que o
+AND for usado as conparações que forem feiteitas tem que estar do OK dos dois lados, usarei nossa
+tabela mais sem comandos para o melhor entendimento.
+ 
+
+QUERO UM LANCHE QUE O NOME DELE SEJA X-TUDO E O TIPO DELE SEJA X
+ 
+
+Ele me trará o X-TUDO do TIPO X que temos na nossa tabela, agora se o meu pedido for diferente reparem
+ 
+
+QUERO UM LANCHE QUE O NOME DELE SEJA X-TUDO E O TIPO DELE SEJA BEIRUTE
+
+ 
+O retorno dele será zero, porque não existe um lanche X-TUDO com o Tipo BEIRUTE oque foi pedido na consulta,
+agora se agente usar o or nessa consulta será diferente.
+
+Por Exemplo:
+ 
+
+QUERO UM LANCHE QUE O NOME DELE SEJA X-TUDO OU O TIPO DELE SEJA BEIRUTE
+
+
+O retorno dele será o X-TUDO e todos os lanches do tipo BEIRUTE pois o or pega os dados dos 2.
+Agora veremos na pratica.
+
+
+SELECT * FROM LANCHES WHERE TIPO_LANCHE = 'X' AND QTD_LANCHE >= 5
+
+ 
+O que foi pedido:
+A seleção de tudo da tabela de lanches onde o tipo de lanche for igual a X e a quantidade do lanche for
+maior que 5.
+Ele lhe trara todos os dados que tenha lanches do tipo X e que tenham quantidade maior que 5
+ 
+
+Agora com o OR
+
+SELECT * FROM LANCHES WHERE TIPO_LANCHE = 'X' OR QTD_LANCHE >= 5
+
+ 
+Selecione tudo da tabela lanches onde o tipo do lanche for igual a X ou a quantidade dele for maior ou
+igual a 5
+Note que ele lhe trará um campo a mais porque o X-Picanha tem uma quantidade inferior a 5 mais ele é do tipo
+X por isso que ele não apareceu no select de cima.
+
+Usando a cláusula IN
+
+Usaremos o in para indicar os dados que você deseja que estejam dentro do comando a sintaxe do in é de facil
+entendimento, por exemplo:
+Queremos todos os lanches do tipo beirute e do tipo X, ao inves de darmos 2 or usaremos o in.
+
+Com o OR
+
+Select * from lanches where tipo_lanche ='x' OR tipo_lanche ='beirute'
+
+Com o IN
+
+Select * from lanches where tipo_lanche in ('X','BEIRUTE')
+ 
+
+Lendo ao pé da letra, selecione tudo da tabela de lanches onde o tipo do lanche estiver dentro de X e Beirute
+sempre que forem mais de um valor colocar a virgula separando os campos, e a regra do alfa-numerico continua valendo
+entre apostrofos.
+
+Tambem podemos usar o NOT IN, diferente o ele pega tudo onde não tem os valores dentro da instrução por exemplo
+
+
+Select * from lanches where tipo_lanche not in ('X','BEIRUTE')
+
+Lendo ao pé da letra, selecione tudo da tabela de lanches onde o tipo de lanche não esteje em X e BEIRUTE.
+o in tambem pode ser ultilizado com o UPDATE tambem.
+
+
+Usando o BETWEEN
+
+
+A palavra between significa entre, usaremos o between para especificar datas, numeros, valores e etc, por
+exemplo, eu quero todos os lanches onde o preço esteja na faixa de 11.00 a 19.00 o codigo ficaria assim
+
+
+select * from lanches where preco_lanche between 11.00 and 19.00
+
+ 
+Lendo ao pé da letra, selecione tudo da tabela lanches onde o preco do lanche estja entre 11.00 e 19.00,
+como no in podemos usar tambem o not between que retornaria os campos que estão fora desta faixa
+
+
+select * from lanches where preco_lanche not between 11.00 and 19.00
+
+
+Lendo ao pé da letra, selecione tudo da tabela lanches onde o preco do lanche não estja entre 11.00 e 19.00
+
+
+Usando o LIKE
+
+O LIKE vai servir para achar dados com o começo da palavra, contendo a palavra ou com o fim da palavra e etc,
+darei um exemplo de como usar o like.
+
+select * from lanches where nome_lanche like ('beirute%')
+
+
+Lendo ao pé da letra selecione tudo da tabela de lanches onde o nome do lanche contenha o inicio beirute,
+o sql sabe que é o inicio da palavra pois a % esta no fim da palavra ou seja, sempre que tiver % no fim da
+palavra queremos os dados iniciado com aquela palavra, se fizesemos assim:
+
+
+select * from lanches where nome_lanche like ('%beirute')
+ 
+Ele selecionaria todos os dados terminados com beirute, provavelmente não nos traria nada, e uma outra forma:
+
+select * from lanches where nome_lanche like ('%beirute%')
+
+Ele me traria tudo que contivese a palavra beirute.
