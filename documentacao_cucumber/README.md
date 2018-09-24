@@ -1,9 +1,9 @@
-# Documentação Megazord de Cucumber
+# Documentação Cucumber
 
 Fala pessoal,
 
 Fiz um compilado para quem está começando em Cucumber ou para servir de referência pra quem já trabalha com o framework.
-Possui quase tudo que já pesquisei e que vem me ajudando na escrita dos meus projetos. Têm posts de muitos dos meus mestres da QANinja Fernando Papini e Thiago Marques, Samanta Cicília (Concrete Solutions), entre outros.
+Possui quase tudo que já pesquisei e que vem me ajudando na escrita dos meus projetos. 
 É simples, e apresenta uma curva de aprendizado alta e nos dias de hoje é imprescindível na carreira de qa. Tentei pôr os post por ordem de precisão.
 
 
@@ -12,7 +12,7 @@ Configurando o GIT:
 - http://rogerdudler.github.io/git-guide/index.pt_BR.html
 - https://tableless.com.br/tudo-que-voce-queria-saber-sobre-git-e-github-mas-tinha-vergonha-de-perguntar/
 
-Passo a passo, leitura obrigatória - Capybara for all - do Thiago Marques
+Passo a passo, leitura obrigatória - Capybara for all 
 - https://github.com/thiagomarquessp/capybaraforall
 
 Configurando ambiente Cucumber no Windows:
@@ -20,9 +20,6 @@ Configurando ambiente Cucumber no Windows:
 
 Configurando ambiente Cucumber no Mac e Linux:
 - http://agiletesters.com.br/topic/103/a-arte-de-desenvolver-testes-cucumber-capybara
-
-Desenvolvam no Atom, gente (é 0800, comunidade bem ativa e tem ótimos plugins):
-- https://atom.io/
 
 Escreva tudo usando page objects, teremos um código limpo e fácil para dar manutenção:
 - https://github.com/natritmeyer/site_prism
@@ -84,6 +81,3 @@ Jenkins:
 
 e Circle Ci:
 - https://github.com/thiagomarquessp/automacao-circleci
-
-Compartilho com vocês o que tenho na minha barra de favoritos para referências rápidas das documentações. O passo a passo vocês vêem nos links. Estou sempre incluindo novos projetos, forks e referências no meu git também:
-- https://github.com/tiagonline
